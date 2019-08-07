@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
     https://github.com/pieper/dicomsort
 
@@ -216,11 +216,13 @@ class DICOMSorter(object):
             # needed for issue with pydicom 0.9.9 and some dicomdir files
             return False
         # check for valid path - abort program to avoid overwrite
-        path = self.pathFromDatasetPattern(ds, safe=(not sorter.options['unsafe']))
+        path = self.pathFromDatasetPattern(ds, safe=(not self.options['unsafe']))
         if os.path.exists(path):
             print('\nSource file: %s' % file)
             print('Target file: %s' % path)
             print('\nTarget file already exists - pattern is probably not unique')
+            new_path = os.path.splitext(path)[0]+'_spectro.dcm'
+            path = new_path
             if not self.options['keepGoing']:
                 print('Aborting to avoid data loss.')
                 sys.exit(-3)
